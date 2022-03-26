@@ -1,4 +1,4 @@
-from orbe.system import Attractor
+from orbe.attractor import Attractor
 from orbe.particle import Particle
 
 # Attractor(name, color, mass, position)

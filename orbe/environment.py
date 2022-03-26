@@ -7,4 +7,4 @@ class Environment:
         self.time = start_time
         self.G = 6.6743*10**-11
         
-        self.systems = []
+        self.attractors = []

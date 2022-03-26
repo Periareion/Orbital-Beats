@@ -22,6 +22,9 @@ visual = {
         (1600,900),
         (1920,1080)
     ],
+
+    'beats_menu_box_size': (400, 56),
+    'beats_menu_side_margin': 80,
 }
 
 def width():
@@ -36,6 +39,10 @@ COLORS = {
 }
 
 situation = {}
+
+update = {
+    'beats_buttons': False
+}
 
 from orbe.modules import configurator as cfg
 

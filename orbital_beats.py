@@ -10,14 +10,13 @@ os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = 'hide'
 import pygame
 
 from orbe.utils import *
-
-from orbe.settings import simulation, visual, COLORS, width, height, situation
-
+from orbe.json_utils import *
+from orbe.settings import simulation, visual, COLORS, width, height, situation, update
 from orbe.environment import Environment
 
 pygame.font.init()
 title_font = pygame.font.Font('assets/fonts/ethnocentric rg.ttf', 60)
-font = pygame.font.SysFont('Consolas', 28, True)
+font = pygame.font.SysFont('Calibri', 28, True)
 
 screen = pygame.display.set_mode((width(), height()))
 pygame.display.set_caption('Orbital Beats')
@@ -41,17 +40,6 @@ def main_menu():
         Button(
             'Beats',
             beats_menu, {},
-            (0, 160),
-            (300, 40),
-            (159, 159, 159),
-            (210, 210, 210),
-            (0, 0, 0),
-            (16, 16, 32),
-        ),
-
-        Button(
-            'Start',
-            orbital_beats, {},
             (0, 100),
             (300, 40),
             (159, 159, 159),
@@ -86,11 +74,12 @@ def main_menu():
     situation['main_menu'] = True
     while situation['main_menu']:
 
-        update_mouse_position()
-        update_mouse_state()
-
         events = pygame.event.get()
         if check_quit(events): situation['main_menu'] = False
+
+        update_mouse_position()
+        update_mouse_state()
+        update_key_state(events)
 
         screen.fill(COLORS['background'])
         draw_text('   rbital Beats', title_font, (255, 255, 255), screen, *screen_position((0, 220)), 'center')
@@ -120,24 +109,66 @@ def beats_menu(button):
 
     environment = Environment(time.perf_counter())
 
-    load_scenes_json(environment, [])
+    beats_data = load_json('beats.json')
 
     buttons = [
-
+        Button(
+            'Back',
+            back,
+            {'situation': situation, 'current': 'beats_menu', 'position': 'topleft'},
+            (-width()/2+visual['beats_menu_side_margin'], height()/2-36),
+            (100, 60),
+        ),
     ]
+
+
+    beats_buttons = []
+
+    update['beats_buttons'] = True
+
+    def add_beats_list_buttons(buttons):
+        all_beats = load_json('beats.json')
+        columns = calculate_columns((width(), height()), visual['beats_menu_box_size'], visual['beats_menu_side_margin'])
+
+        for n, beat_name in enumerate(all_beats.keys()):
+            beat_dict = all_beats[beat_name]
+
+            column = n % columns['columns']
+            row = n // columns['columns']
+
+            button = Button(
+                beat_name,
+                orbital_beats,
+                {'beat': [beat_name], 'position': 'topleft', 'from_beats_menu': True, 'update': update},
+                (
+                    -width()/2 + visual['beats_menu_side_margin'] + column * (visual['beats_menu_box_size'][0] + columns['distance_between_boxes']),
+                    height()/2 - (120 + row * (visual['beats_menu_box_size'][1] + 40)),
+                ),
+                visual['beats_menu_box_size'],
+                primary_text_color=beat_dict[0]['Attractor']['color'],
+            )
+
+            buttons.append(button)
 
     situation['beats_menu'] = True
     while situation['beats_menu']:
 
-        update_mouse_position()
-        update_mouse_state()
-
         events = pygame.event.get()
         if check_quit(events): situation['beats_menu'] = False
 
+        update_mouse_position()
+        update_mouse_state()
+        update_key_state(events)
+
         screen.fill(COLORS['background'])
+
+        if update['beats_buttons']:
+            update['beats_buttons'] = False
+            beats_buttons = []
+            add_beats_list_buttons(beats_buttons)
         
         check_buttons(buttons, mouse_position['pos'], mouse_click_tracker, screen, font)
+        check_buttons(beats_buttons, mouse_position['pos'], mouse_click_tracker, screen, font, key_hold_tracker, key_down_tracker, True, update, 'beats_buttons')
 
         if screen.get_size() != (size := (width(), height())):
             screen = pygame.display.set_mode((size))
@@ -159,36 +190,41 @@ def orbital_beats(button):
 
     environment = Environment(time.perf_counter())
 
-    load_scenes_json(environment, ['Space Beet', 'Solway'])
+    beats = button.args['beat']
+    load_scenes_json(environment, beats)
+    if in_and_true('from_beats_menu', button.args):
+        button.args['update']['beats_buttons'] = True
 
     last_frame_time = time.perf_counter()
     situation['in_game'] = True
     while situation['in_game']:
 
-        update_mouse_position()
-        update_mouse_state()
-
         events = pygame.event.get()
         if check_quit(events): situation['in_game'] = False
-        for event in events:
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_0:
-                    save_scene_json(environment)
+
+        update_mouse_position()
+        update_mouse_state()
+        update_key_state(events)
+
+        if in_and_true(pygame.K_LCTRL, key_hold_tracker) and in_and_true(pygame.K_s, key_down_tracker):
+            save_scene_json(environment)
 
         screen.fill(COLORS['background'])
 
         if not simulation['paused']:
             update_particles(environment, path_surface)
 
+        # Restricts frame updates to 60 per second
         if (current_frame_time := time.perf_counter()) - last_frame_time < 1 / 60:
             continue
         last_frame_time = current_frame_time
-        
+
+        # Checks if the current screen size matches the settings
         if screen.get_size() != (size := (width(), height())):
             screen = pygame.display.set_mode((size))
             path_surface = pygame.Surface(size, pygame.SRCALPHA)
 
-        fade_path_surface(path_surface, 3)
+        fade_path_surface(path_surface, 1)
         screen.blit(path_surface, (0,0))
 
         draw_beat(environment, screen)
@@ -218,7 +254,7 @@ def options_menu(button):
         Button(
             'Back',
             back,
-            {'situation': situation, 'current': 'in_options'},
+            {'situation': situation, 'current': 'options_menu'},
             (0, -100),
             (300, 40),
         ),
@@ -227,11 +263,12 @@ def options_menu(button):
     situation['options_menu'] = True
     while situation['options_menu']:
 
-        update_mouse_position()
-        update_mouse_state()
-
         events = pygame.event.get()
         if check_quit(events): situation['options_menu'] = False
+
+        update_mouse_position()
+        update_mouse_state()
+        update_key_state(events)
 
         screen.fill(COLORS['background'])
 

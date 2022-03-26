@@ -1,0 +1,167 @@
+{
+	"O": [
+		{
+			"System": {
+				"name": "O",
+				"color": "#dd1122",
+				"mass": "5e15",
+				"position": "(-300, 210)"
+			},
+			"Particles": [
+				{
+					"name": "1", "color": "#ffffff", "secondary": "#ffffff", "sound": "None",
+					"period": 2, "eccentricity": 0.3, "start": 0, "orientation": 270
+				},
+				{
+					"name": "2", "color": "#ffffff", "secondary": "#ffffff", "sound": "None",
+					"period": 2, "eccentricity": 0.3, "start": 180, "orientation": 270
+				}
+			]
+		}
+	],
+
+	"Space Beet": [
+		{
+			"System": {
+				"name": "John",
+				"color": "#cc4ccf",
+				"mass": "5e16",
+				"position": "(-160,-160)"
+			},
+			"Particles": [
+				{
+					"name": "snare1", "color": "#cc4ccf", "secondary": "#cc4ccf", "sound": "assets/sounds/space_beet/snare.wav",
+					"period": 3, "eccentricity": 0.7, "start": 90, "orientation": 310
+				},
+				{
+					"name": "snare2", "color": "#cc4ccf", "secondary": "#cc4ccf", "sound": "assets/sounds/space_beet/snare.wav",
+					"period": 3, "eccentricity": 0.7, "start": 270, "orientation": 310
+				},
+				{
+					"name": "kick1", "color": "#f79cad", "secondary": "#f79cad", "sound": "assets/sounds/space_beet/kick.wav",
+					"period": 3, "eccentricity": 0.4, "start": 0, "orientation": 310
+				},
+				{
+					"name": "kick2", "color": "#f79cad", "secondary": "#f79cad", "sound": "assets/sounds/space_beet/kick.wav",
+					"period": 3, "eccentricity": 0.4, "start": 112.5, "orientation": 310
+				},
+				{
+					"name": "kick3", "color": "#f79cad", "secondary": "#f79cad", "sound": "assets/sounds/space_beet/kick.wav",
+					"period": 3, "eccentricity": 0.4, "start": 225, "orientation": 310
+				}
+			]
+		},
+		{
+			"System": {
+				"name": "Nate",
+				"color": "#9c7e27",
+				"mass": "1e16",
+				"position": "(160,-160)"
+			},
+			"Particles": [
+				{
+					"name": "hihat C 1", "color": "#bd992f", "secondary": "#bd992f", "sound": "assets/sounds/space_beet/hihat C.wav",
+					"period": 3, "eccentricity": 0.6, "start": 0, "orientation": 240
+				},
+				{
+					"name": "hihat C 2", "color": "#bd992f", "secondary": "#bd992f", "sound": "assets/sounds/space_beet/hihat C.wav",
+					"period": 3, "eccentricity": 0.6, "start": 45, "orientation": 240
+				},
+				{
+					"name": "hihat C 3", "color": "#bd992f", "secondary": "#bd992f", "sound": "assets/sounds/space_beet/hihat C.wav",
+					"period": 3, "eccentricity": 0.6, "start": 90, "orientation": 240
+				},
+				{
+					"name": "hihat C 4", "color": "#bd992f", "secondary": "#bd992f", "sound": "assets/sounds/space_beet/hihat C.wav",
+					"period": 3, "eccentricity": 0.6, "start": 135, "orientation": 240
+				},
+				{
+					"name": "hihat C 5", "color": "#bd992f", "secondary": "#bd992f", "sound": "assets/sounds/space_beet/hihat C.wav",
+					"period": 3, "eccentricity": 0.6, "start": 180, "orientation": 240
+				},
+				{
+					"name": "hihat C 6", "color": "#bd992f", "secondary": "#bd992f", "sound": "assets/sounds/space_beet/hihat C.wav",
+					"period": 3, "eccentricity": 0.6, "start": 225, "orientation": 240
+				},
+				{
+					"name": "hihat C 7", "color": "#bd992f", "secondary": "#bd992f", "sound": "assets/sounds/space_beet/hihat C.wav",
+					"period": 3, "eccentricity": 0.6, "start": 270, "orientation": 240
+				},
+				{
+					"name": "hihat O 1", "color": "#bd992f", "secondary": "#bd992f", "sound": "assets/sounds/space_beet/hihat O.wav",
+					"period": 3, "eccentricity": 0.6, "start": 315, "orientation": -65
+				}
+			]
+		}
+	],
+
+	"Template": [
+		{
+			"System": {
+				"name": "",
+				"color": "#",
+				"mass": "e",
+				"position": ""
+			},
+			"Particles": [
+				{
+					"name": "", "color": "#", "secondary": "#", "sound": "None",
+					"period": 1, "eccentricity": 0, "start": 0, "orientation": 0
+				}
+			]
+		}
+	],
+
+	"Solway": [
+		{
+			"System": {
+				"name": "O",
+				"color": "#1524aa",
+				"mass": "5e15",
+				"position": "(0, -100)"
+			},
+			"Particles": [
+				{
+					"name": "1", "color": "#777777", "secondary": "#ffffff", "sound": "assets/sounds/space_beet/hihat C.wav",
+					"period": 3, "eccentricity": 0.3, "start": -0, "orientation": 270
+				},
+				{
+					"name": "1", "color": "#7700cc", "secondary": "#7700cc", "sound": "assets/sounds/bum2.wav",
+					"period": 3, "eccentricity": 0.3, "start": -0, "orientation": 270
+				},
+				{
+					"name": "2", "color": "#777777", "secondary": "#ffffff", "sound": "assets/sounds/space_beet/hihat O.wav",
+					"period": 3, "eccentricity": 0.3, "start": -45, "orientation": 270
+				},
+				{
+					"name": "3", "color": "#777777", "secondary": "#ffffff", "sound": "assets/sounds/space_beet/hihat C.wav",
+					"period": 3, "eccentricity": 0.3, "start": -90, "orientation": 270
+				},
+				{
+					"name": "4", "color": "#777777", "secondary": "#ffffff", "sound": "assets/sounds/space_beet/hihat O.wav",
+					"period": 3, "eccentricity": 0.3, "start": -135, "orientation": 270
+				},
+				{
+					"name": "4", "color": "#7700cc", "secondary": "#7700cc", "sound": "assets/sounds/bam2.wav",
+					"period": 3, "eccentricity": 0.3, "start": -135, "orientation": 270
+				},
+				{
+					"name": "5", "color": "#ffffff", "secondary": "#ffffff", "sound": "assets/sounds/space_beet/kick.wav",
+					"period": 3, "eccentricity": 0.3, "start": -225, "orientation": 270
+				},
+				{
+					"name": "5", "color": "#ffffff", "secondary": "#ffffff", "sound": "assets/sounds/space_beet/hihat C.wav",
+					"period": 3, "eccentricity": 0.3, "start": -225, "orientation": 270
+				},
+				{
+					"name": "6", "color": "#ffffff", "secondary": "#ffffff", "sound": "assets/sounds/space_beet/kick.wav",
+					"period": 3, "eccentricity": 0.3, "start": -247.5, "orientation": 270
+				},
+				{
+					"name": "7", "color": "#ffffff", "secondary": "#ffffff", "sound": "assets/sounds/space_beet/snare.wav",
+					"period": 3, "eccentricity": 0.3, "start": -270, "orientation": 270
+				}
+			]
+		}
+	]
+}

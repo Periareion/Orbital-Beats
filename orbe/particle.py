@@ -10,6 +10,7 @@ import pyglet
 from orbe.settings import CONSTS
 
 pyglet.options['audio'] = ('openal', 'pulse', 'directsound', 'silent')
+pyglet.resource.media("assets/sounds/space_beet/hihat O.wav", streaming=False).play()
 
 def norm(vector):
 
@@ -21,7 +22,7 @@ def norm(vector):
 class Particle:
 
     def __init__(self,
-                 system,
+                 attractor,
                  name: str = 'Bob',
                  color: str = '#ffffff',
                  secondary_color: str = '#ffffff',
@@ -32,7 +33,7 @@ class Particle:
                  orientation: float = 0,
                  clockwise = False):
 
-        self.system = system
+        self.attractor = attractor
         self.name = name
         self.color = pygame.Color(color)
         self.secondary_color = secondary_color
@@ -40,51 +41,49 @@ class Particle:
         self.soundfile = soundfile
         try:
             self.sound = pyglet.resource.media(self.soundfile, streaming=False)
-            self.sound.play()
+#            self.sound.play()
         except:
             self.sound = None
 
         self.period = period
         self.eccentricity = eccentricity
         self.orientation = math.radians(orientation)
-        self.mean_anomaly_start = math.radians(mean_anomaly_start)
+        self.mean_anomaly_start = math.radians(mean_anomaly_start % 360)
         self.clockwise = clockwise
         self.sgn = 1
 
         self.poof_images = [pygame.transform.scale(pygame.image.load(f'assets/textures/poof/poof{i}.png'), (24, 24)) for i in range(11)]
         self.animations = []
 
-        self.semi_major_axis = (CONSTS['G'] * system.attractor_mass * (period / (2 * math.pi)) ** 2) ** (1 / 3)
+        self.semi_major_axis = (CONSTS['G'] * attractor.mass * (period / (2 * math.pi)) ** 2) ** (1 / 3)
         self.apoapsis = self.semi_major_axis*(1+self.eccentricity)
         self.periapsis = self.semi_major_axis*(1-self.eccentricity)
 
         self.position = np.array([0, 0], dtype=np.float64)
-        self.update_position(0, 0)
+        self.update_position(0, 0, False)
 
-    def update_position(self, time, start_time):
+    def update_position(self, time, start_time, play_sound=True):
 
         e = self.eccentricity
 
-        mean_anomaly = (1 - 2 * self.clockwise) * 2 * math.pi / self.period * (
-                    time - start_time) + self.mean_anomaly_start
+        mean_anomaly = (1 - 2 * self.clockwise) * 2 * math.pi / self.period * (time - start_time) + self.mean_anomaly_start
 
-        eccentric_anomaly = mean_anomaly + 2 * sum(
-            [1 / k * jv(k, k * e) * math.sin(k * mean_anomaly) for k in range(1, 100)])
+        eccentric_anomaly = mean_anomaly + 2 * sum([1 / k * jv(k, k * e) * math.sin(k * mean_anomaly) for k in range(1, 80)])
 
         true_anomaly = 2 * math.atan2((1 + e) ** 0.5 * math.sin(eccentric_anomaly / 2),
                                       (1 - e) ** 0.5 * math.cos(eccentric_anomaly / 2))
         # 2*math.atan(((1+e)/(1-e))**0.5*math.tan(eccentric_anomaly/2))
 
         self.new_sgn = math.copysign(1, true_anomaly)
-        if self.sgn != self.new_sgn and not not self.sound:
+        if self.sgn != self.new_sgn and not not self.sound and play_sound:
             self.sgn = self.new_sgn
             self.sound.play()
             self.animations.extend(self.poof_images)
 
         radius = self.semi_major_axis * (1 - e ** 2) / (1 + e * math.cos(true_anomaly))
 
-        self.position = [self.system.attractor_position[0] + radius * math.cos(true_anomaly + self.orientation),
-                         self.system.attractor_position[1] + radius * math.sin(true_anomaly + self.orientation)]
+        self.position = [self.attractor.position[0] + radius * math.cos(true_anomaly + self.orientation),
+                         self.attractor.position[1] + radius * math.sin(true_anomaly + self.orientation)]
 
 
 
